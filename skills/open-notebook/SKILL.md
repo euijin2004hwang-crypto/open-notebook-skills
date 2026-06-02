@@ -12,9 +12,9 @@ Open Notebook is an open-source AI research assistant and knowledge management t
 
 | Item | Value |
 |------|-------|
-| API Base | \`http://localhost:5055/api/\` |
-| Web UI | \`http://localhost:8502/\` |
-| Swagger Docs | \`http://localhost:5055/docs\` |
+| API Base | \`http://localhost:****/api/\` |
+| Web UI | \`http://localhost:****/\` |
+| Swagger Docs | \`http://localhost:****/docs\` |
 | Auth | Disabled (no API key needed) |
 | Proxy Workaround | **\`--noproxy '*'\`** required for all curl calls |
 | MCP Package | \`open-notebook-mcp\` (PyPI, via \`uvx\`) |
@@ -23,7 +23,7 @@ Open Notebook is an open-source AI research assistant and knowledge management t
 ## ⚠️ Critical Rules
 
 ### 1. Always use \`--noproxy '*'\` with curl
-The environment uses \`ALL_PROXY=socks5://127.0.0.1:40000\`. Every curl call to localhost **must** include \`--noproxy '*'\` or it hangs/fails.
+The environment uses \`ALL_PROXY=socks5://127.0.0.1:****\`. Every curl call to localhost **must** include \`--noproxy '*'\` or it hangs/fails.
 
 ### 2. API path is \`/api/\` — NOT \`/api/v1/\`
 Swagger UI shows paths at \`/api/\`. The \`/api/v1/\` prefix returns 404 on every endpoint.
@@ -37,43 +37,43 @@ Swagger UI shows paths at \`/api/\`. The \`/api/v1/\` prefix returns 404 on ever
 
 ### Search a Notebook
 \`\`\`bash
-curl -s --noproxy '*' -X POST http://localhost:5055/api/search \
+curl -s --noproxy '*' -X POST http://localhost:****/api/search \
   -H "Content-Type: application/json" \
   -d '{"query": "검색어", "notebook_id": "notebook:xxx"}' | python3 -m json.tool
 \`\`\`
 
 ### Ask AI (RAG-based Q&A)
 \`\`\`bash
-curl -s --noproxy '*' -X POST http://localhost:5055/api/search/ask \
+curl -s --noproxy '*' -X POST http://localhost:****/api/search/ask \
   -H "Content-Type: application/json" \
   -d '{"query": "질문", "notebook_id": "notebook:xxx"}'
 \`\`\`
 
 ### Simple Ask (no session)
 \`\`\`bash
-curl -s --noproxy '*' -X POST http://localhost:5055/api/search/ask/simple \
+curl -s --noproxy '*' -X POST http://localhost:****/api/search/ask/simple \
   -H "Content-Type: application/json" \
   -d '{"query": "질문", "notebook_id": "notebook:xxx"}'
 \`\`\`
 
 ### List Notebooks
 \`\`\`bash
-curl -s --noproxy '*' http://localhost:5055/api/notebooks | python3 -m json.tool
+curl -s --noproxy '*' http://localhost:****/api/notebooks | python3 -m json.tool
 \`\`\`
 
 ### Get Notebook Detail (includes source/note counts)
 \`\`\`bash
-curl -s --noproxy '*' http://localhost:5055/api/notebooks/NOTEBOOK_ID | python3 -m json.tool
+curl -s --noproxy '*' http://localhost:****/api/notebooks/NOTEBOOK_ID | python3 -m json.tool
 \`\`\`
 
 ### List Sources in a Notebook
 \`\`\`bash
-curl -s --noproxy '*' "http://localhost:5055/api/sources?notebook_id=NOTEBOOK_ID" | python3 -m json.tool
+curl -s --noproxy '*' "http://localhost:****/api/sources?notebook_id=NOTEBOOK_ID" | python3 -m json.tool
 \`\`\`
 
 ### Create a Source
 \`\`\`bash
-curl -s --noproxy '*' -X POST http://localhost:5055/api/sources \
+curl -s --noproxy '*' -X POST http://localhost:****/api/sources \
   -H "Content-Type: application/json" \
   -d '{
     "type": "website",
@@ -84,7 +84,7 @@ curl -s --noproxy '*' -X POST http://localhost:5055/api/sources \
 
 ### Create a Note
 \`\`\`bash
-curl -s --noproxy '*' -X POST http://localhost:5055/api/notes \
+curl -s --noproxy '*' -X POST http://localhost:****/api/notes \
   -H "Content-Type: application/json" \
   -d '{
     "notebook_id": "notebook:xxx",
@@ -97,21 +97,21 @@ curl -s --noproxy '*' -X POST http://localhost:5055/api/notes \
 
 **1️⃣ Create Session**
 \`\`\`bash
-SESSION_ID=$(curl -s --noproxy '*' -X POST http://localhost:5055/api/chat/sessions \
+SESSION_ID=$(curl -s --noproxy '*' -X POST http://localhost:****/api/chat/sessions \
   -H "Content-Type: application/json" \
   -d '{"notebook_id": "notebook:xxx"}' | python3 -c "import sys,json; print(json.load(sys.stdin)['session_id'])")
 \`\`\`
 
 **2️⃣ Build Context**
 \`\`\`bash
-CONTEXT=$(curl -s --noproxy '*' -X POST "http://localhost:5055/api/notebooks/notebook:xxx/context" \
+CONTEXT=$(curl -s --noproxy '*' -X POST "http://localhost:****/api/notebooks/notebook:xxx/context" \
   -H "Content-Type: application/json" \
   -d '{"query": "질문 내용"}' | python3 -c "import sys,json; print(json.load(sys.stdin)['context'])")
 \`\`\`
 
 **3️⃣ Execute Chat**
 \`\`\`bash
-curl -s --noproxy '*' -X POST http://localhost:5055/api/chat/execute \
+curl -s --noproxy '*' -X POST http://localhost:****/api/chat/execute \
   -H "Content-Type: application/json" \
   -d "{
     \"session_id\": \"$SESSION_ID\",
@@ -126,7 +126,7 @@ curl -s --noproxy '*' -X POST http://localhost:5055/api/chat/execute \
 
 ### Run a Transformation
 \`\`\`bash
-curl -s --noproxy '*' -X POST http://localhost:5055/api/transformations/execute \
+curl -s --noproxy '*' -X POST http://localhost:****/api/transformations/execute \
   -H "Content-Type: application/json" \
   -d '{
     "notebook_id": "notebook:xxx",
@@ -136,7 +136,7 @@ curl -s --noproxy '*' -X POST http://localhost:5055/api/transformations/execute 
 
 ### Generate a Podcast
 \`\`\`bash
-curl -s --noproxy '*' -X POST http://localhost:5055/api/podcasts/generate \
+curl -s --noproxy '*' -X POST http://localhost:****/api/podcasts/generate \
   -H "Content-Type: application/json" \
   -d '{"notebook_id": "notebook:xxx"}' | python3 -m json.tool
 \`\`\`
@@ -152,7 +152,7 @@ mcp_servers:
     command: uvx
     args: ["open-notebook-mcp"]
     env:
-      OPEN_NOTEBOOK_URL: http://localhost:5055
+      OPEN_NOTEBOOK_URL: http://localhost:****
 \`\`\`
 
 ## Pitfalls
