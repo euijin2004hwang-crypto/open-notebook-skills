@@ -33,6 +33,27 @@ Swagger UI shows paths at \`/api/\`. The \`/api/v1/\` prefix returns 404 on ever
 
 ---
 
+## 🗂️ Notebook Naming Convention
+
+Open Notebook notebook IDs follow the format `notebook:<uuid>`. You can organize notebooks using a **naming convention with descriptive suffixes** to categorize them by purpose:
+
+| Convention | Example | Purpose |
+|------------|---------|---------|
+| `-research` | `notebook:abc123-research` | Research / academic knowledge base |
+| `-work` | `notebook:def456-work` | Work-related documents and notes |
+| `-personal` | `notebook:ghi789-personal` | Personal notes, media, and creative work |
+| No suffix | `notebook:jkl012` | Shared or default workspace |
+
+This convention is entirely **user-defined** — Open Notebook itself does not enforce any naming pattern. Using tags helps agents:
+- Determine which notebooks are available for querying
+- Apply appropriate permission rules (read-only vs. read-write)
+- Organize knowledge by domain or ownership
+
+To discover available notebooks and their IDs:
+```bash
+curl -s --noproxy '*' http://localhost:****/api/notebooks | python3 -m json.tool
+```
+
 ## Core Workflows
 
 ### Search a Notebook
