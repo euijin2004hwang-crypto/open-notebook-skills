@@ -12,16 +12,16 @@ Open Notebook은 오픈소스 AI 연구 보조 및 지식 관리 도구입니다
 
 | 항목 | 값 |
 |------|-----|
-| API Base | \`http://localhost:5055/api/\` |
-| Web UI | \`http://localhost:8502/\` |
-| Swagger Docs | \`http://localhost:5055/docs\` |
+| API Base | \`http://localhost:****/api/\` |
+| Web UI | \`http://localhost:****/\` |
+| Swagger Docs | \`http://localhost:****/docs\` |
 | 인증 | 기본 비활성화 |
 | 필수 옵션 | **\`--noproxy '*'\`** |
 
 ## ⚠️ 중요 규칙
 
 ### 1. curl에 \`--noproxy '*'\` 필수
-SOCKS5 프록시(\`ALL_PROXY=socks5://127.0.0.1:40000\`) 환경에서 localhost 호출 시 반드시 필요.
+SOCKS5 프록시(\`ALL_PROXY=socks5://127.0.0.1:****\`) 환경에서 localhost 호출 시 반드시 필요.
 
 ### 2. API 경로는 \`/api/\`
 \`/api/v1/\`은 404 반환.
@@ -32,14 +32,14 @@ SOCKS5 프록시(\`ALL_PROXY=socks5://127.0.0.1:40000\`) 환경에서 localhost 
 
 ### 1️⃣ 노트북 검색
 \`\`\`bash
-curl -s --noproxy '*' -X POST http://localhost:5055/api/search \
+curl -s --noproxy '*' -X POST http://localhost:****/api/search \
   -H "Content-Type: application/json" \
   -d '{"query": "검색어", "notebook_id": "notebook:xxx"}'
 \`\`\`
 
 ### 2️⃣ RAG 질문
 \`\`\`bash
-curl -s --noproxy '*' -X POST http://localhost:5055/api/search/ask \
+curl -s --noproxy '*' -X POST http://localhost:****/api/search/ask \
   -H "Content-Type: application/json" \
   -d '{"query": "질문", "notebook_id": "notebook:xxx"}'
 \`\`\`
@@ -50,17 +50,17 @@ curl -s --noproxy '*' -X POST http://localhost:5055/api/search/ask \
 
 \`\`\`bash
 # 1. 세션 생성
-SESSION_ID=$(curl -s --noproxy '*' -X POST http://localhost:5055/api/chat/sessions \
+SESSION_ID=$(curl -s --noproxy '*' -X POST http://localhost:****/api/chat/sessions \
   -H "Content-Type: application/json" \
   -d '{"notebook_id": "notebook:xxx"}' | python3 -c "import sys,json; print(json.load(sys.stdin)['session_id'])")
 
 # 2. 컨텍스트 빌드
-CONTEXT=$(curl -s --noproxy '*' -X POST "http://localhost:5055/api/notebooks/notebook:xxx/context" \
+CONTEXT=$(curl -s --noproxy '*' -X POST "http://localhost:****/api/notebooks/notebook:xxx/context" \
   -H "Content-Type: application/json" \
   -d '{"query": "질문 내용"}' | python3 -c "import sys,json; print(json.load(sys.stdin)['context'])")
 
 # 3. 질문 전송 (컨텍스트 포함)
-curl -s --noproxy '*' -X POST http://localhost:5055/api/chat/execute \
+curl -s --noproxy '*' -X POST http://localhost:****/api/chat/execute \
   -H "Content-Type: application/json" \
   -d "{
     \"session_id\": \"$SESSION_ID\",
@@ -75,7 +75,7 @@ curl -s --noproxy '*' -X POST http://localhost:5055/api/chat/execute \
 
 ### 소스 생성
 \`\`\`bash
-curl -s --noproxy '*' -X POST http://localhost:5055/api/sources \
+curl -s --noproxy '*' -X POST http://localhost:****/api/sources \
   -H "Content-Type: application/json" \
   -d '{"type": "website", "url": "https://example.com", "notebook_id": "notebook:xxx"}'
 \`\`\`
@@ -84,12 +84,12 @@ curl -s --noproxy '*' -X POST http://localhost:5055/api/sources \
 
 ### 소스 목록 조회
 \`\`\`bash
-curl -s --noproxy '*' "http://localhost:5055/api/sources?notebook_id=NOTEBOOK_ID"
+curl -s --noproxy '*' "http://localhost:****/api/sources?notebook_id=NOTEBOOK_ID"
 \`\`\`
 
 ### 노트 생성
 \`\`\`bash
-curl -s --noproxy '*' -X POST http://localhost:5055/api/notes \
+curl -s --noproxy '*' -X POST http://localhost:****/api/notes \
   -H "Content-Type: application/json" \
   -d '{"notebook_id": "notebook:xxx", "title": "제목", "content": "내용"}'
 \`\`\`
@@ -107,19 +107,19 @@ curl -s --noproxy '*' -X POST http://localhost:5055/api/notes \
 
 \`\`\`bash
 # 설정 확인
-curl -s --noproxy '*' http://localhost:5055/api/config
+curl -s --noproxy '*' http://localhost:****/api/config
 
 # 모델 목록
-curl -s --noproxy '*' http://localhost:5055/api/models | python3 -m json.tool
+curl -s --noproxy '*' http://localhost:****/api/models | python3 -m json.tool
 
 # 기본 모델 자동 할당
-curl -s --noproxy '*' -X POST http://localhost:5055/api/models/auto-assign
+curl -s --noproxy '*' -X POST http://localhost:****/api/models/auto-assign
 
 # 공급자 상태 확인
-curl -s --noproxy '*' http://localhost:5055/api/models/providers
+curl -s --noproxy '*' http://localhost:****/api/models/providers
 
 # 설정 업데이트
-curl -s --noproxy '*' -X PUT http://localhost:5055/api/settings \
+curl -s --noproxy '*' -X PUT http://localhost:****/api/settings \
   -H "Content-Type: application/json" \
   -d '{"chat_model": "gpt-4"}'
 \`\`\`
@@ -129,7 +129,7 @@ curl -s --noproxy '*' -X PUT http://localhost:5055/api/settings \
 ## 팟캐스트 생성
 
 \`\`\`bash
-curl -s --noproxy '*' -X POST http://localhost:5055/api/podcasts/generate \
+curl -s --noproxy '*' -X POST http://localhost:****/api/podcasts/generate \
   -H "Content-Type: application/json" \
   -d '{"notebook_id": "notebook:xxx"}'
 \`\`\`
@@ -145,7 +145,7 @@ mcp_servers:
     command: uvx
     args: ["open-notebook-mcp"]
     env:
-      OPEN_NOTEBOOK_URL: http://localhost:5055
+      OPEN_NOTEBOOK_URL: http://localhost:****
 \`\`\`
 
 ---
