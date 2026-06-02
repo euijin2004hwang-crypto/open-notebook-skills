@@ -20,6 +20,33 @@ Open Notebook은 오픈소스 AI 연구 보조 및 지식 관리 도구입니다
 
 ## ⚠️ 중요 규칙
 
+## 🗂️ 노트북 네이밍 컨벤션 (Tagging System)
+
+Open Notebook의 노트북 ID는 `notebook:<uuid>` 형식입니다. 용도별로 **설명적인 접미사(suffix)** 를 붙여 노트북을 분류할 수 있습니다:
+
+| 컨벤션 | 예시 | 용도 |
+|--------|------|------|
+| `-research` | `notebook:abc123-research` | 연구/학술 지식 베이스 |
+| `-work` | `notebook:def456-work` | 업무 문서 및 자료 |
+| `-personal` | `notebook:ghi789-personal` | 개인 노트, 미디어 |
+| 접미사 없음 | `notebook:jkl012` | 공용 기본 워크스페이스 |
+
+이 컨벤션은 **사용자 정의**입니다. Open Notebook 자체는 네이밍 패턴을 강제하지 않습니다.
+태그를 활용하면 에이전트가:
+- 어떤 노트북을 조회 가능한지 판단
+- 읽기 전용/읽기-쓰기 권한 구분
+- 도메인별 지식 체계화
+
+할 수 있습니다.
+
+노트북 목록 조회:
+```bash
+curl -s --noproxy '*' http://localhost:****/api/notebooks | python3 -m json.tool
+```
+
+
+---
+
 ### 1. curl에 \`--noproxy '*'\` 필수
 SOCKS5 프록시(\`ALL_PROXY=socks5://127.0.0.1:****\`) 환경에서 localhost 호출 시 반드시 필요.
 
