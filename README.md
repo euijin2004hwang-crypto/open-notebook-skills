@@ -35,6 +35,17 @@ A detailed Korean-language Hermes Agent skill for the Open Notebook REST API.
 | 🎙️ **Podcast Generation** | Auto-generate audio podcasts from notebook content |
 | 🔗 **MCP Integration** | Hermes MCP server registration |
 
+### 3. `hermes-tweet` (English)
+A companion Hermes Agent skill for using Hermes Tweet before or alongside Open
+Notebook research workflows.
+
+| Feature | Description |
+|---------|-------------|
+| X/Twitter Research | Search tweets, profiles, replies, and public context |
+| Source Collection | Gather social links and summaries before adding notebook sources |
+| Monitoring | Track accounts or tweets that may become research material |
+| Guarded Actions | Keep posting, replies, DMs, and account changes behind explicit approval |
+
 ---
 
 ## 🗂️ Notebook Naming Convention
@@ -157,6 +168,8 @@ open-notebook-skills/
 ├── README.md
 ├── LICENSE
 └── skills/
+    ├── hermes-tweet/
+    │   └── SKILL.md
     ├── open-notebook/
     │   └── SKILL.md
     └── open-notebook-kr-guide/
